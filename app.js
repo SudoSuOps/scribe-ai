@@ -1,8 +1,7 @@
 // Letterdrop AI - Frontend JavaScript
 
 // API Configuration
-const API_BASE = 'https://api.letterdrop.ai'; // Change to your API endpoint
-// For local testing: 'http://localhost:8004'
+const API_BASE = 'https://api.letterdropai.com';
 
 // DOM Elements
 const letterType = document.getElementById('letter-type');
