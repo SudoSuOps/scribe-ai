@@ -163,12 +163,98 @@
                 <div class="demo-output">
                     <div class="output-header">
                         <span>Generated Letter</span>
-                        <button id="copy-btn" class="btn btn-sm" style="display:none;">Copy</button>
+                        <div class="output-actions">
+                            <button id="copy-btn" class="btn btn-sm" style="display:none;">Copy</button>
+                            <button id="mail-btn" class="btn btn-sm btn-primary" style="display:none;">📬 Mail It - $8</button>
+                        </div>
                     </div>
                     <div id="letter-output" class="letter-output">
                         <p class="placeholder-text">Your letter will appear here...</p>
                     </div>
                 </div>
+            </div>
+
+            <!-- Mail Order Panel (hidden by default) -->
+            <div id="mail-panel" class="mail-panel" style="display:none;">
+                <h3>📬 Send Certified Mail</h3>
+                <p class="mail-desc">We'll print, certify, and mail your letter via USPS. Tracking included.</p>
+
+                <div class="mail-options">
+                    <label for="recipient-bureau">Send To</label>
+                    <select id="recipient-bureau">
+                        <option value="transunion">TransUnion - Chester, PA</option>
+                        <option value="equifax">Equifax - Atlanta, GA</option>
+                        <option value="experian">Experian - Allen, TX</option>
+                    </select>
+
+                    <label for="mail-type">Mail Type</label>
+                    <select id="mail-type">
+                        <option value="certified" selected>Certified Mail - $8.00</option>
+                        <option value="certified_rr">Certified + Return Receipt - $9.00</option>
+                        <option value="standard">Standard First Class - $3.00</option>
+                    </select>
+                </div>
+
+                <div class="price-breakdown">
+                    <div class="price-row">
+                        <span>PostGrid Postage</span>
+                        <span id="postgrid-cost">$6.70</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Network Fee (20%)</span>
+                        <span id="network-fee">$1.30</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total</span>
+                        <span id="total-price">$8.00</span>
+                    </div>
+                </div>
+
+                <button id="pay-btn" class="btn btn-primary btn-lg btn-full">
+                    Pay with USDC (Base)
+                </button>
+                <p class="payment-note">Pay via any wallet. No account needed.</p>
+            </div>
+
+            <!-- Payment Modal -->
+            <div id="payment-modal" class="modal" style="display:none;">
+                <div class="modal-content">
+                    <button class="modal-close" onclick="closePaymentModal()">&times;</button>
+                    <h3>💰 Pay with USDC</h3>
+                    <p class="modal-subtitle">Scan QR or send manually</p>
+
+                    <div id="qr-container" class="qr-container">
+                        <!-- QR code will be inserted here -->
+                    </div>
+
+                    <div class="payment-details">
+                        <div class="payment-row">
+                            <span>Amount</span>
+                            <span id="payment-amount" class="payment-value">8.00 USDC</span>
+                        </div>
+                        <div class="payment-row">
+                            <span>Network</span>
+                            <span class="payment-value">Base</span>
+                        </div>
+                        <div class="payment-row">
+                            <span>Send To</span>
+                            <span class="payment-value ens">usdc.letterdrop.eth</span>
+                        </div>
+                        <div class="payment-row address-row">
+                            <span>Address</span>
+                            <code id="payment-address" class="payment-address">0x...</code>
+                            <button class="copy-address-btn" onclick="copyAddress()">📋</button>
+                        </div>
+                    </div>
+
+                    <div id="payment-status" class="payment-status">
+                        <span class="status-dot"></span>
+                        <span>Waiting for payment...</span>
+                    </div>
+
+                    <p class="payment-expires">Expires in <span id="expires-countdown">30:00</span></p>
+                </div>
+            </div>
             </div>
         </div>
     </section>

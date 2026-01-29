@@ -11,6 +11,23 @@ const senderAddress = document.getElementById('sender-address');
 const generateBtn = document.getElementById('generate-btn');
 const letterOutput = document.getElementById('letter-output');
 const copyBtn = document.getElementById('copy-btn');
+const mailBtn = document.getElementById('mail-btn');
+const mailPanel = document.getElementById('mail-panel');
+const recipientBureau = document.getElementById('recipient-bureau');
+const mailType = document.getElementById('mail-type');
+const payBtn = document.getElementById('pay-btn');
+const paymentModal = document.getElementById('payment-modal');
+
+// Pricing data
+const PRICING = {
+    standard: { postgrid: 250, total: 300 },
+    certified: { postgrid: 670, total: 800 },
+    certified_rr: { postgrid: 750, total: 900 }
+};
+
+// Current letter content
+let currentLetter = '';
+let currentOrder = null;
 
 // Generate Letter
 async function generateLetter() {
@@ -29,6 +46,8 @@ async function generateLetter() {
     btnLoading.style.display = 'inline';
     generateBtn.disabled = true;
     letterOutput.innerHTML = '<p class="placeholder-text">Generating your letter...</p>';
+    mailBtn.style.display = 'none';
+    mailPanel.style.display = 'none';
 
     try {
         const response = await fetch(`${API_BASE}/generate`, {
@@ -49,10 +68,12 @@ async function generateLetter() {
         }
 
         const data = await response.json();
+        currentLetter = data.letter;
 
         // Display the letter
         letterOutput.textContent = data.letter;
         copyBtn.style.display = 'block';
+        mailBtn.style.display = 'block';
 
         // Scroll to output on mobile
         if (window.innerWidth < 900) {
@@ -63,8 +84,10 @@ async function generateLetter() {
         console.error('Generation error:', error);
 
         // Demo fallback - show sample letter
-        letterOutput.textContent = generateDemoLetter();
+        currentLetter = generateDemoLetter();
+        letterOutput.textContent = currentLetter;
         copyBtn.style.display = 'block';
+        mailBtn.style.display = 'block';
     }
 
     // Reset button
@@ -220,6 +243,164 @@ ${name}`
     return templates[type] || templates.credit_dispute;
 }
 
+// Show mail panel
+function showMailPanel() {
+    mailPanel.style.display = 'block';
+    mailPanel.scrollIntoView({ behavior: 'smooth' });
+    updatePricing();
+}
+
+// Update pricing display
+function updatePricing() {
+    const type = mailType.value;
+    const pricing = PRICING[type];
+
+    const postgridCost = (pricing.postgrid / 100).toFixed(2);
+    const networkFee = ((pricing.total - pricing.postgrid) / 100).toFixed(2);
+    const total = (pricing.total / 100).toFixed(2);
+
+    document.getElementById('postgrid-cost').textContent = `$${postgridCost}`;
+    document.getElementById('network-fee').textContent = `$${networkFee}`;
+    document.getElementById('total-price').textContent = `$${total}`;
+
+    // Update mail button price
+    mailBtn.textContent = `📬 Mail It - $${total}`;
+}
+
+// Create order and show payment
+async function createOrder() {
+    if (!senderName.value || !senderAddress.value) {
+        alert('Please enter your name and address');
+        return;
+    }
+
+    // Parse address
+    const addressParts = senderAddress.value.split(',').map(s => s.trim());
+    let city = '', state = '', zip = '';
+
+    if (addressParts.length >= 2) {
+        city = addressParts[1] || 'Unknown';
+        const stateZip = (addressParts[2] || '').split(' ');
+        state = stateZip[0] || 'XX';
+        zip = stateZip[1] || '00000';
+    }
+
+    const orderData = {
+        letter_content: currentLetter,
+        sender: {
+            name: senderName.value,
+            address_line1: addressParts[0] || senderAddress.value,
+            city: city,
+            state: state,
+            postal_code: zip
+        },
+        recipient_bureau: recipientBureau.value,
+        mail_type: mailType.value
+    };
+
+    payBtn.disabled = true;
+    payBtn.textContent = 'Creating order...';
+
+    try {
+        const response = await fetch(`${API_BASE}/order`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData)
+        });
+
+        if (!response.ok) throw new Error('Order failed');
+
+        currentOrder = await response.json();
+        showPaymentModal(currentOrder);
+
+    } catch (error) {
+        console.error('Order error:', error);
+        // Show demo payment modal
+        showPaymentModal({
+            order_id: 'demo_' + Date.now(),
+            payment: {
+                amount: (PRICING[mailType.value].total / 100).toFixed(2),
+                currency: 'USDC',
+                network: 'Base',
+                address: '0x742d35Cc6634C0532925a3b844Bc9e7595f...',
+                ens: 'usdc.letterdrop.eth',
+                qr_data: 'ethereum:0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913@8453',
+                expires_at: new Date(Date.now() + 30 * 60000).toISOString()
+            },
+            letter: {
+                recipient: recipientBureau.options[recipientBureau.selectedIndex].text,
+                mail_type: mailType.value
+            }
+        });
+    }
+
+    payBtn.disabled = false;
+    payBtn.textContent = 'Pay with USDC (Base)';
+}
+
+// Show payment modal
+function showPaymentModal(order) {
+    const payment = order.payment;
+
+    document.getElementById('payment-amount').textContent = `${payment.amount} USDC`;
+    document.getElementById('payment-address').textContent = payment.address;
+
+    // Generate QR code
+    const qrContainer = document.getElementById('qr-container');
+    qrContainer.innerHTML = '';
+
+    // Use a simple QR code - in production use a library like qrcode.js
+    const qrImg = document.createElement('img');
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(payment.qr_data)}`;
+    qrImg.alt = 'Payment QR Code';
+    qrContainer.appendChild(qrImg);
+
+    // Start countdown
+    startCountdown(new Date(payment.expires_at));
+
+    // Show modal
+    paymentModal.style.display = 'flex';
+}
+
+// Close payment modal
+function closePaymentModal() {
+    paymentModal.style.display = 'none';
+}
+
+// Copy address to clipboard
+async function copyAddress() {
+    const address = document.getElementById('payment-address').textContent;
+    try {
+        await navigator.clipboard.writeText(address);
+        alert('Address copied!');
+    } catch (err) {
+        console.error('Copy failed:', err);
+    }
+}
+
+// Countdown timer
+let countdownInterval;
+function startCountdown(expiresAt) {
+    if (countdownInterval) clearInterval(countdownInterval);
+
+    const countdownEl = document.getElementById('expires-countdown');
+
+    countdownInterval = setInterval(() => {
+        const now = new Date();
+        const diff = expiresAt - now;
+
+        if (diff <= 0) {
+            countdownEl.textContent = 'Expired';
+            clearInterval(countdownInterval);
+            return;
+        }
+
+        const mins = Math.floor(diff / 60000);
+        const secs = Math.floor((diff % 60000) / 1000);
+        countdownEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+
 // Copy to clipboard
 async function copyLetter() {
     const text = letterOutput.textContent;
@@ -248,8 +429,16 @@ async function copyLetter() {
 // Event Listeners
 generateBtn.addEventListener('click', generateLetter);
 copyBtn.addEventListener('click', copyLetter);
+mailBtn.addEventListener('click', showMailPanel);
+mailType.addEventListener('change', updatePricing);
+payBtn.addEventListener('click', createOrder);
 
-// Allow Enter key in textarea to not submit (Shift+Enter for line break, just Enter works normally)
+// Close modal on outside click
+paymentModal.addEventListener('click', (e) => {
+    if (e.target === paymentModal) closePaymentModal();
+});
+
+// Allow Ctrl+Enter to generate
 situation.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && e.ctrlKey) {
         e.preventDefault();
@@ -270,5 +459,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Make functions available globally for onclick handlers
+window.closePaymentModal = closePaymentModal;
+window.copyAddress = copyAddress;
 
 console.log('Letterdrop AI loaded');
