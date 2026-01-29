@@ -321,7 +321,7 @@ async function createOrder() {
             payment: {
                 amount: (PRICING[mailType.value].total / 100).toFixed(2),
                 currency: 'USDC',
-                network: 'Base',
+                network: 'Ethereum',
                 address: '0x742d35Cc6634C0532925a3b844Bc9e7595f...',
                 ens: 'usdc.letterdrop.eth',
                 qr_data: 'ethereum:0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913@8453',
@@ -335,7 +335,7 @@ async function createOrder() {
     }
 
     payBtn.disabled = false;
-    payBtn.textContent = 'Pay with USDC (Base)';
+    payBtn.textContent = 'Pay with USDC (ETH)';
 }
 
 // Show payment modal
