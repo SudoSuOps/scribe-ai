@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letterdrop AI - Professional Letters in Seconds</title>
+    <meta name="description" content="AI-powered letter writing for credit disputes, debt validation, cease & desist, and more. Legally-sound letters generated instantly.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="/" class="logo">
+                <span class="logo-icon">✉</span>
+                <span class="logo-text">Letterdrop<span class="logo-ai">.ai</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#letter-types">Letter Types</a>
+                <a href="#demo">Try It</a>
+                <a href="#" class="btn btn-primary">Get Started</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Professional Letters<br>
+                    <span class="gradient-text">Written by AI</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Credit disputes, debt validation, cease & desist letters — legally-sound and ready to send in seconds.
+                </p>
+                <div class="hero-cta">
+                    <a href="#demo" class="btn btn-primary btn-lg">Write a Letter Now</a>
+                    <a href="#features" class="btn btn-secondary btn-lg">See How It Works</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">10+</span>
+                        <span class="stat-label">Letter Types</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">&lt;3s</span>
+                        <span class="stat-label">Generation Time</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Legal Citations</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why Letterdrop?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Generation</h3>
+                    <p>Get professionally written letters in under 3 seconds. No templates, no copy-paste — fully custom every time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚖️</div>
+                    <h3>Legally Sound</h3>
+                    <p>Automatic citations for FCRA, FDCPA, HIPAA, and state laws. Every letter includes proper legal references.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Purpose-Built</h3>
+                    <p>Trained specifically for consumer protection letters. Not a generic AI — a specialist.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📬</div>
+                    <h3>Ready to Send</h3>
+                    <p>Proper formatting, deadlines, and all required elements included. Print, sign, mail.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Letter Types Section -->
+    <section id="letter-types" class="letter-types">
+        <div class="container">
+            <h2 class="section-title">Letters We Write</h2>
+            <div class="types-grid">
+                <div class="type-card">
+                    <div class="type-icon">📊</div>
+                    <h3>Credit Disputes</h3>
+                    <p>FCRA Section 611 disputes to TransUnion, Equifax, and Experian</p>
+                </div>
+                <div class="type-card">
+                    <div class="type-icon">📋</div>
+                    <h3>Debt Validation</h3>
+                    <p>FDCPA Section 809(b) requests to verify debt legitimacy</p>
+                </div>
+                <div class="type-card">
+                    <div class="type-icon">🛑</div>
+                    <h3>Cease & Desist</h3>
+                    <p>Stop collector harassment with legally-binding demands</p>
+                </div>
+                <div class="type-card">
+                    <div class="type-icon">💰</div>
+                    <h3>Demand Letters</h3>
+                    <p>Pre-litigation demands for unpaid debts or damages</p>
+                </div>
+                <div class="type-card">
+                    <div class="type-icon">🏥</div>
+                    <h3>Medical Billing</h3>
+                    <p>Dispute incorrect charges and insurance billing errors</p>
+                </div>
+                <div class="type-card">
+                    <div class="type-icon">🏠</div>
+                    <h3>Landlord/Tenant</h3>
+                    <p>Security deposit demands, repair requests, lease disputes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo">
+        <div class="container">
+            <h2 class="section-title">Try It Now</h2>
+            <p class="section-subtitle">Describe your situation and get a professional letter instantly.</p>
+
+            <div class="demo-container">
+                <div class="demo-input">
+                    <label for="letter-type">Letter Type</label>
+                    <select id="letter-type">
+                        <option value="credit_dispute">Credit Dispute</option>
+                        <option value="debt_validation">Debt Validation</option>
+                        <option value="cease_desist">Cease & Desist</option>
+                        <option value="demand_letter">Demand Letter</option>
+                        <option value="medical_billing">Medical Billing Dispute</option>
+                    </select>
+
+                    <label for="situation">Describe Your Situation</label>
+                    <textarea id="situation" rows="4" placeholder="Example: TransUnion is showing a Capital One account with a $2,500 balance that was discharged in my bankruptcy on June 15, 2024..."></textarea>
+
+                    <label for="sender-name">Your Name</label>
+                    <input type="text" id="sender-name" placeholder="John Smith">
+
+                    <label for="sender-address">Your Address</label>
+                    <input type="text" id="sender-address" placeholder="123 Main St, City, State ZIP">
+
+                    <button id="generate-btn" class="btn btn-primary btn-lg btn-full">
+                        <span class="btn-text">Generate Letter</span>
+                        <span class="btn-loading" style="display:none;">Generating...</span>
+                    </button>
+                </div>
+
+                <div class="demo-output">
+                    <div class="output-header">
+                        <span>Generated Letter</span>
+                        <button id="copy-btn" class="btn btn-sm" style="display:none;">Copy</button>
+                    </div>
+                    <div id="letter-output" class="letter-output">
+                        <p class="placeholder-text">Your letter will appear here...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Fight Back?</h2>
+            <p>Stop letting creditors and collectors push you around. Get the letters you need to protect your rights.</p>
+            <a href="#demo" class="btn btn-white btn-lg">Write Your First Letter</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-icon">✉</span>
+                    <span class="logo-text">Letterdrop<span class="logo-ai">.ai</span></span>
+                    <p>AI-powered letter writing for consumer protection.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Product</h4>
+                        <a href="#features">Features</a>
+                        <a href="#letter-types">Letter Types</a>
+                        <a href="#demo">Try It</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Disclaimer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Letterdrop AI. Not a law firm. Letters are for informational purposes.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
