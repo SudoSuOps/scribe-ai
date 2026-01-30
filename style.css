@@ -477,9 +477,60 @@ h3 { font-size: 1.25rem; }
 }
 
 .cta p {
-    opacity: 0.9;
+    color: var(--text-muted);
     max-width: 500px;
     margin: 0 auto 32px;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* White Glove Section */
+.white-glove {
+    padding: 80px 0;
+    background: var(--bg-alt);
+}
+
+.white-glove-content {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.white-glove-text h2 {
+    margin-bottom: 16px;
+}
+
+.white-glove-text p {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.white-glove-list {
+    list-style: none;
+    text-align: left;
+    max-width: 400px;
+    margin: 0 auto 32px;
+}
+
+.white-glove-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    position: relative;
+    padding-left: 32px;
+}
+
+.white-glove-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
 }
 
 /* Footer */
